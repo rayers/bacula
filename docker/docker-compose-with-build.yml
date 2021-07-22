@@ -11,6 +11,7 @@ services:
     image: dividia/bacula-catalog:11.0.5
     restart: unless-stopped
     environment:
+      MYSQL_HOST: localhost
       MYSQL_ROOT_PASSWORD: bacula
       MYSQL_PASSWORD: bacula
       MYSQL_USER: bacula

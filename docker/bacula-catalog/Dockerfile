@@ -1,8 +1,10 @@
 FROM --platform=linux/amd64 dividia/bacula-base:11.0.5 AS base
 
-FROM mariadb:10.6
+FROM mariadb:10.3
 
 MAINTAINER eduardo@fametec.com.br
+
+ENV MYSQL_HOST db
 
 ENV MYSQL_PASSWORD bacula
 
@@ -18,8 +20,8 @@ COPY --from=base /opt/bacula/scripts/grant_mysql_privileges /docker-entrypoint-i
 
 RUN { \
 	echo '#!/bin/bash'; \
-	echo 'sh /docker-entrypoint-initdb.d/make_mysql_tables --user=$MYSQL_USER --password=$MYSQL_PASSWORD'; \
-	echo 'sh /docker-entrypoint-initdb.d/grant_mysql_privileges --user=$MYSQL_USER --password=$MYSQL_PASSWORD'; \
+	echo 'sh /docker-entrypoint-initdb.d/make_mysql_tables --host=$MYSQL_HOST --user=$MYSQL_USER --password=$MYSQL_PASSWORD'; \
+	echo 'sh /docker-entrypoint-initdb.d/grant_mysql_privileges --host=$MYSQL_HOST --user=$MYSQL_USER --password=$MYSQL_PASSWORD'; \
 } >> /docker-entrypoint-initdb.d/deploy_database.sh \
 && chmod +x /docker-entrypoint-initdb.d/deploy_database.sh \
 && chown mysql. /docker-entrypoint-initdb.d/deploy_database.sh
