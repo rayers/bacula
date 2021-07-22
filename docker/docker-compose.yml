@@ -3,19 +3,20 @@ version: '3.1'
 services:
 
   db:
-    image: fametec/bacula-catalog:11.0.2
+    image: dividia/bacula-catalog:11.0.5
     restart: unless-stopped
     environment:
-      POSTGRES_PASSWORD: bacula
-      POSTGRES_USER: bacula
-      POSTGRES_DB: bacula
+      MYSQL_ROOT_PASSWORD: bacula
+      MYSQL_PASSWORD: bacula
+      MYSQL_USER: bacula
+      MYSQL_DATABASE: bacula
     # volumes:
-    #   - pgdata:/var/lib/postgresql/data:rw
+    #   - dbdata:/var/lib/postgresql/data:rw
     ports:
       - 5432:5432
 #
   bacula-dir:
-    image: fametec/bacula-director:11.0.2
+    image: dividia/bacula-director:11.0.5
     restart: unless-stopped
     volumes:
       - ./etc:/opt/bacula/etc:ro
@@ -25,7 +26,7 @@ services:
       - 9101:9101
 #
   bacula-sd:
-    image: fametec/bacula-storage:11.0.2
+    image: dividia/bacula-storage:11.0.5
     restart: unless-stopped
     depends_on:
       - bacula-dir
@@ -36,7 +37,7 @@ services:
       - 9103:9103
 #
   bacula-fd:
-    image: fametec/bacula-client:11.0.2
+    image: dividia/bacula-client:11.0.5
     restart: unless-stopped
     depends_on:
       - bacula-sd
@@ -48,7 +49,7 @@ services:
       - 9102:9102
 #
   baculum-api:
-    image: fametec/baculum-api:11.0.2
+    image: dividia/baculum-api:11.0.5
     restart: unless-stopped
     depends_on: 
       - db
@@ -61,7 +62,7 @@ services:
 
 #
   baculum-web:
-    image: fametec/baculum-web:11.0.2
+    image: dividia/baculum-web:11.0.5
     restart: unless-stopped
     depends_on: 
       - baculum-api
@@ -73,7 +74,7 @@ services:
 
 # 
 #volumes: 
-#  pgdata:
+#  dbdata:
 #
 #  gmail:
 #    image: fametec/postfix:gmail
@@ -98,4 +99,4 @@ services:
 #
 # 
 #volumes: 
-#  pgdata:
+#  dbdata:

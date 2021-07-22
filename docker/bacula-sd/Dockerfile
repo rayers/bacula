@@ -1,6 +1,6 @@
-FROM fametec/bacula-base:11.0.2
+FROM --platform=linux/amd64 dividia/bacula-base:11.0.5
 
-RUN yum install -y bacula-cloud-storage --exclude=bacula-mysql
+RUN yum install -y bacula-cloud-storage --exclude=bacula-postgresql
 
 RUN for i in `ls /opt/bacula/bin`; do if test -z /usr/sbin/$i; then ln -s /opt/bacula/bin/$i /usr/sbin/$i; fi; done 
 
